@@ -1,6 +1,6 @@
 {
   "name": "apireq",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
   "main": "index.js",
   "scripts": {
