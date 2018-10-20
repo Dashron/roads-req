@@ -1,6 +1,7 @@
 "use strict";
 
 const http = require('http');
+const https = require('https');
 
 /**
     Options can take four top level fields.
@@ -15,9 +16,10 @@ module.exports.request = function (options) {
     this._handleBasicAuth(options);
 
     return new Promise((resolve, reject) => {
+        let httpLib = options.request.protocol === 'https:' ? https : http;
 
         // Build the request body
-        let request = http.request(options.request, (res) => {
+        let request = httpLib.request(options.request, (res) => {
             res.setEncoding(options.response.encoding);
             let body = '';
 
@@ -59,6 +61,7 @@ function ifEmptyThenSet(object, key, value) {
 module.exports._applyDefaults = function (options) {
     ifEmptyThenSet(options, 'request', {});
     ifEmptyThenSet(options.request, 'headers', {});
+    ifEmptyThenSet(options.request, 'protocol', 'http:');
     ifEmptyThenSet(options, 'response', {});
     ifEmptyThenSet(options.response, 'encoding', 'utf8');
 }
