@@ -100,4 +100,22 @@ describe('all tests', () => {
             expect(response.body).toBe("test test test");
         });
     });
+
+    test('get request with basic auth', () => {
+        expect.assertions(1);
+
+        return makeRequest({
+            request: {
+                method: 'GET',
+                path: '/auth'
+            },
+            basicAuth: {
+                un: "harvey",
+                pw: "birdman"
+            }
+        }, true)
+        .then((response) => {
+            expect(response.response.statusCode).toEqual(200);
+        });
+    });
 });

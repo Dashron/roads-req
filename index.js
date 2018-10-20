@@ -3,14 +3,16 @@
 const http = require('http');
 
 /**
-    Options can take three top level fields.
+    Options can take four top level fields.
     1. options.request contains all the HTTP request options (as defined in https://nodejs.org/api/http.html#http_http_request_options_callback)
     2. options.response is an object with additional information about the response. Currently this only supports the subfield "encoding" for the response encoding
     3. options.requestBody which is a static string containing the body to send with this request
+    4. options.basicAuth which is an object containing "un" and "pw" fields that will be translated into the proper basic auth header
  */
 module.exports.request = function (options) {
     this._applyDefaults(options);
     this._handleRequestBody(options);
+    this._handleBasicAuth(options);
 
     return new Promise((resolve, reject) => {
 
@@ -56,6 +58,7 @@ function ifEmptyThenSet(object, key, value) {
 
 module.exports._applyDefaults = function (options) {
     ifEmptyThenSet(options, 'request', {});
+    ifEmptyThenSet(options.request, 'headers', {});
     ifEmptyThenSet(options, 'response', {});
     ifEmptyThenSet(options.response, 'encoding', 'utf8');
 }
@@ -69,6 +72,12 @@ module.exports._handleRequestBody = function (options) {
     if (typeof options.requestBody === "object") {
         options.requestBody = JSON.stringify(options.requestBody);
         options.request.headers['content-type'] = 'application/json';
+    }
+}
+
+module.exports._handleBasicAuth = function (options) {
+    if (options.basicAuth) {
+        options.request.headers.authorization = 'Basic ' + new Buffer(options.basicAuth.un + ':' + options.basicAuth.pw).toString('base64')
     }
 }
 

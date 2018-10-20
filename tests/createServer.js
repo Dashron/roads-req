@@ -45,7 +45,6 @@ module.exports.createServer = () => {
         });
 
         server.listen(this.port, () => {
-            console.log('listening on ' + this.port);
             resolve(server);
         });
 
@@ -89,6 +88,31 @@ let routes = {
     '/echo': {
         'POST': (body, headers) => {
             return buildResponse(200, {}, body);
+        }
+    },
+    '/auth': {
+        'GET': (body, headers) => {
+            if (!headers.authorization) {
+                return buildResponse(400, {}, 'No authorization header');
+            }
+
+            let authHeader = headers.authorization.split(' ');
+
+            if (authHeader[0] !== 'Basic') {
+                return buildResponse(400, {}, 'Auth header is not basic');
+            }
+
+            let authParts = new Buffer(authHeader[1], 'base64').toString().split(':');
+
+            if (authParts[0] !== 'harvey') {
+                return buildResponse(400, {}, 'Username is not harvey');
+            }
+
+            if (authParts[1] !== 'birdman') {
+                return buildResponse(400, {}, 'Password is not birdman');
+            }
+
+            return buildResponse(200, {});
         }
     }
 };
