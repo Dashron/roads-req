@@ -1,0 +1,23 @@
+{
+  "name": "apireq",
+  "version": "0.0.1",
+  "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dashron/apireq.git"
+  },
+  "author": "Aaron Hedges",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dashron/apireq/issues"
+  },
+  "homepage": "https://github.com/Dashron/apireq#readme",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "private": true
+}
