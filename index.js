@@ -2,6 +2,7 @@
 
 const http = require('http');
 const https = require('https');
+const contentType = require('content-type');
 
 /**
     Options can take four top level fields.
@@ -85,7 +86,13 @@ module.exports._handleBasicAuth = function (options) {
 }
 
 module.exports._parseResponseBody = function (response, responseBody) {
-    if (response.headers['content-type'] === 'application/json') {
+    if (!response.headers['content-type']) {
+        return responseBody;
+    }
+
+    let parsedContentType = contentType.parse(response.headers['content-type']);
+
+    if (parsedContentType.type === 'application/json') {
         return JSON.parse(responseBody);
     }
 

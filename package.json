@@ -1,6 +1,6 @@
 {
   "name": "apireq",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,8 @@
   "devDependencies": {
     "jest": "^23.6.0"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "content-type": "^1.0.4"
+  }
 }

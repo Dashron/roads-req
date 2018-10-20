@@ -85,6 +85,23 @@ describe('all tests', () => {
         });
     });
 
+    test('JSON get request with encoding', () => {
+        expect.assertions(2);
+
+        return makeRequest({
+            request: {
+                path: '/usersJSONWithCharset'
+            }
+        }, true)
+        .then((response) => {
+            expect(response.response.statusCode).toEqual(200);
+            expect(response.body).toEqual([{
+                id: 5,
+                name: 'Harvey Birdman'
+            }]);
+        });
+    });
+
     test('post request with  body', () => {
         expect.assertions(2);
 

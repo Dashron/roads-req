@@ -85,6 +85,16 @@ let routes = {
             }]));
         }
     },
+    '/usersJSONWithCharset': {
+        'GET': (body, headers) => {
+            return buildResponse(200, {
+                "content-type": "application/json;charset=utf-8"
+            }, JSON.stringify([{
+                id: 5,
+                name: 'Harvey Birdman'
+            }]));
+        }
+    },
     '/echo': {
         'POST': (body, headers) => {
             return buildResponse(200, {}, body);
