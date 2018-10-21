@@ -10,6 +10,7 @@ const contentType = require('content-type');
     2. options.response is an object with additional information about the response. Currently this only supports the subfield "encoding" for the response encoding
     3. options.requestBody which is a static string containing the body to send with this request
     4. options.basicAuth which is an object containing "un" and "pw" fields that will be translated into the proper basic auth header
+    5. options.followRedirects which is a boolean that states whether or not the client should immediately follow any HTTP redirects and return the value of the final request. This currently has NO protection against infinite redirects.
  */
 module.exports.request = function (options) {
     this._applyDefaults(options);
@@ -31,6 +32,13 @@ module.exports.request = function (options) {
             
             // Handle the end of the response body
             res.on('end', () => {
+                // Handle redirects
+                if (options.followRedirects && [301, 302].indexOf(res.statusCode) != -1) {
+                    let newUrl = new URL(res.headers['location']);
+                    options.request.path = newUrl.pathname;
+                    return resolve(this.request(options));
+                }
+
                 resolve({
                     response: res,
                     body: this._parseResponseBody(res, body)
@@ -61,6 +69,7 @@ function ifEmptyThenSet(object, key, value) {
 
 module.exports._applyDefaults = function (options) {
     ifEmptyThenSet(options, 'request', {});
+    ifEmptyThenSet(options, 'followRedirects', false);
     ifEmptyThenSet(options.request, 'headers', {});
     ifEmptyThenSet(options.request, 'protocol', 'http:');
     ifEmptyThenSet(options, 'response', {});

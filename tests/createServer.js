@@ -67,12 +67,9 @@ function buildResponse(status, headers, body) {
  * List of all test routes
  */
 let routes = {
-    '/usersText': {
+    '/basic': {
         'GET': (body, headers) => {
-            return buildResponse(200, {}, JSON.stringify([{
-                id: 5,
-                name: 'Harvey Birdman'
-            }]));
+            return buildResponse(200, {}, 'basic');
         }
     },
     '/usersJSON': {
@@ -123,6 +120,11 @@ let routes = {
             }
 
             return buildResponse(200, {});
+        }
+    },
+    '/redirect': {
+        'GET': (body, headers) => {
+            return buildResponse(302, {'location': 'http://localhost:' + port + '/basic'})
         }
     }
 };

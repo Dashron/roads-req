@@ -56,15 +56,12 @@ describe('all tests', () => {
 
         return makeRequest({
             request: {
-                path: '/usersText'
+                path: '/basic'
             }
         }, true)
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
-            expect(response.body).toBe(JSON.stringify([{
-                id: 5,
-                name: 'Harvey Birdman'
-            }]));
+            expect(response.body).toBe('basic');
         });
     });
 
@@ -102,7 +99,7 @@ describe('all tests', () => {
         });
     });
 
-    test('post request with  body', () => {
+    test('post request with body', () => {
         expect.assertions(2);
 
         return makeRequest({
@@ -133,6 +130,38 @@ describe('all tests', () => {
         }, true)
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
+        });
+    });
+
+    test('dont follow redirect', () => {
+        expect.assertions(2);
+
+        return makeRequest({
+            request: {
+                method: 'GET',
+                path: '/redirect'
+            },
+            followRedirects: false
+        }, true)
+        .then((response) => {
+            expect(response.response.statusCode).toEqual(302);
+            expect(response.response.headers.location).toBe('http://localhost:8080/basic');
+        });
+    });
+
+    test('follow redirect', () => {
+        expect.assertions(2);
+
+        return makeRequest({
+            request: {
+                method: 'GET',
+                path: '/redirect'
+            },
+            followRedirects: true
+        }, true)
+        .then((response) => {
+            expect(response.response.statusCode).toEqual(200);
+            expect(response.body).toBe('basic');
         });
     });
 });
