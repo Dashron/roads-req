@@ -1,5 +1,5 @@
 {
-  "name": "apireq",
+  "name": "roads-req",
   "version": "0.2.0",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
   "main": "index.js",
@@ -8,18 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dashron/apireq.git"
+    "url": "git+https://github.com/Dashron/roads-req.git"
   },
   "author": "Aaron Hedges",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Dashron/apireq/issues"
+    "url": "https://github.com/Dashron/roads-req/issues"
   },
-  "homepage": "https://github.com/Dashron/apireq#readme",
+  "homepage": "https://github.com/Dashron/roads-req#readme",
   "devDependencies": {
     "jest": "^23.6.0"
   },
-  "private": true,
   "dependencies": {
     "content-type": "^1.0.4"
   }
