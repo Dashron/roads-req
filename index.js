@@ -18,7 +18,7 @@ module.exports.request = function (options) {
     this._handleBasicAuth(options);
 
     return new Promise((resolve, reject) => {
-        let httpLib = options.request.protocol === 'https:' ? https : http;
+        let httpLib = options.request.protocol === 'https' ? https : http;
 
         // Build the request body
         let request = httpLib.request(options.request, (res) => {

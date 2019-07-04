@@ -1,10 +1,10 @@
 {
   "name": "roads-req",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
   "main": "index.js",
   "scripts": {
-    "test": "jest test.js"
+    "test": "node node_modules/jest/bin/jest.js tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Dashron/roads-req#readme",
   "devDependencies": {
-    "jest": "^24.5.0"
+    "jest": "^24.8.0"
   },
   "dependencies": {
     "content-type": "^1.0.4"

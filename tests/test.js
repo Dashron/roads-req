@@ -1,7 +1,7 @@
 "use strict";
 
-let apireq = require('./index.js');
-let createServer = require('./tests/createServer.js');
+let apireq = require('../index.js');
+let createServer = require('./createServer.js');
 // TODO: This is missing failure tests, such as "bad un/pw are not accepted for basic auth"
 
 /**
