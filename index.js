@@ -19,7 +19,8 @@ module.exports.request = function (options) {
 
     return new Promise((resolve, reject) => {
         let httpLib = options.request.protocol === 'https' ? https : http;
-
+        delete options.request.protocol;
+        
         // Build the request body
         let request = httpLib.request(options.request, (res) => {
             res.setEncoding(options.response.encoding);
