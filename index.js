@@ -100,6 +100,10 @@ module.exports._parseResponseBody = function (response, responseBody) {
         return responseBody;
     }
 
+    if (responseBody === undefined || responseBody === '') {
+        return responseBody;
+    }
+
     let parsedContentType = contentType.parse(response.headers['content-type']);
 
     if (parsedContentType.type === 'application/json') {

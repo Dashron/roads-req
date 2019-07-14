@@ -92,6 +92,13 @@ let routes = {
             }]));
         }
     },
+    '/contentTypeNoBody': {
+        'GET': (body, headers) => {
+            return buildResponse(200, {
+                "content-type": "application/json;charset=utf-8"
+            });
+        }
+    },
     '/echo': {
         'POST': (body, headers) => {
             return buildResponse(200, {}, body);

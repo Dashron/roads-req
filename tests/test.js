@@ -164,4 +164,21 @@ describe('all tests', () => {
             expect(response.body).toBe('basic');
         });
     });
+
+    test('content type without body doesn\'t error', () => {
+        expect.assertions(2);
+
+        return makeRequest({
+            request: {
+                method: 'GET',
+                path: '/contentTypeNoBody'
+            }
+        }, true)
+        .then((response) => {
+            expect(response.response.statusCode).toEqual(200);
+            expect(response.body).toBe('');
+        });
+    });
+
+    
 });
