@@ -1,13 +1,17 @@
 "use strict";
-const port = 8080;
+
+import * as http from 'http';
+import {Server} from 'http';
+
+export const port: number = 8080;
 
 // creates an http server specifically for testing this request library
-module.exports.createServer = () => {
+export default function createServer(): Promise<Server> {
 
     return new Promise((resolve, reject) => {
-        let server = require('http').createServer();
+        let server = http.createServer();
 
-        let body = '';
+        let body: string | undefined = '';
         let bodyFound = false;
 
         server.on('request', (request, response) => {
@@ -39,12 +43,12 @@ module.exports.createServer = () => {
             });
     
             // Handle any errors
-            request.on('error', (err) => {
+            request.on('error', (err: Error) => {
                 throw err;
             });
         });
 
-        server.listen(this.port, () => {
+        server.listen(port, () => {
             resolve(server);
         });
 
@@ -54,8 +58,14 @@ module.exports.createServer = () => {
     });
 };
 
+interface MockResponse {
+    status: number,
+    headers?: {[x: string]: any},
+    body?: string
+};
+
 // Formatting help for building the responses interpreted by this test http server
-function buildResponse(status, headers, body) {
+function buildResponse(status: number, headers?: {[x: string]: any}, body?: string): MockResponse {
     return {
         status: status,
         headers: headers,
@@ -66,7 +76,9 @@ function buildResponse(status, headers, body) {
 /**
  * List of all test routes
  */
-let routes = {
+let routes: {[x: string]: { [x: string]: {
+    (body: string | undefined, headers: {[x: string]: any}): MockResponse
+}}} = {
     '/basic': {
         'GET': (body, headers) => {
             return buildResponse(200, {}, 'basic');
@@ -116,7 +128,7 @@ let routes = {
                 return buildResponse(400, {}, 'Auth header is not basic');
             }
 
-            let authParts = new Buffer(authHeader[1], 'base64').toString().split(':');
+            let authParts = Buffer.from(authHeader[1], 'base64').toString().split(':');
 
             if (authParts[0] !== 'harvey') {
                 return buildResponse(400, {}, 'Username is not harvey');
@@ -142,7 +154,7 @@ let routes = {
  * @param {*} method 
  * @param {*} url 
  */
-function router (method, url) {
+function router (method: string, url: string) {
     if (routes[url] && routes[url][method]) {
         return routes[url][method];
     }
@@ -151,5 +163,3 @@ function router (method, url) {
         return buildResponse(404, {}, 'Page not found');
     };
 }
-
-module.exports.port = port;

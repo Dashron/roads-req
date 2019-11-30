@@ -1,19 +1,22 @@
 "use strict";
 
-let apireq = require('../index.js');
-let createServer = require('./createServer.js');
+import apireq, { RoadsRequestResponse, RoadsReqOptions } from '../../index';
+import { Server as HttpServer } from 'http';
+import { Server as HttpsServer } from 'https';
+import createServer, {port} from '../createServer';
+
 // TODO: This is missing failure tests, such as "bad un/pw are not accepted for basic auth"
 
 /**
  * Clean up request options
  * @param {object} options 
  */
-function setOptionsToUseTestServer(options) {
+function setOptionsToUseTestServer(options: RoadsReqOptions) {
     if (!options.request) {
         options.request = {};
     }
 
-    options.request.port = createServer.port;
+    options.request.port = port;
     options.request.hostname = 'localhost';
 }
 
@@ -23,20 +26,20 @@ function setOptionsToUseTestServer(options) {
  * @param {object} options 
  * @param {*} shouldSucceed 
  */
-let makeRequest = function (options, shouldSucceed) {
+let makeRequest = function (options: RoadsReqOptions): Promise<RoadsRequestResponse> {
     setOptionsToUseTestServer(options);
-    return apireq.request(options);
+    return apireq(options);
 };
 
 describe('all tests', () => {
-    let server = null;
+    let server: HttpServer | HttpsServer;
 
     /**
      * Setup
      */
     beforeAll(() => {
-        return createServer.createServer()
-        .then((newServer) => {
+        return createServer()
+        .then((newServer: HttpServer | HttpsServer) => {
             server = newServer;
         });
     });
@@ -58,7 +61,7 @@ describe('all tests', () => {
             request: {
                 path: '/basic'
             }
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toBe('basic');
@@ -72,7 +75,7 @@ describe('all tests', () => {
             request: {
                 path: '/usersJSON'
             }
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toEqual([{
@@ -89,7 +92,7 @@ describe('all tests', () => {
             request: {
                 path: '/usersJSONWithCharset'
             }
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toEqual([{
@@ -108,7 +111,7 @@ describe('all tests', () => {
                 path: '/echo'
             },
             requestBody: "test test test"
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toBe("test test test");
@@ -127,7 +130,7 @@ describe('all tests', () => {
                 un: "harvey",
                 pw: "birdman"
             }
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
         });
@@ -142,7 +145,7 @@ describe('all tests', () => {
                 path: '/redirect'
             },
             followRedirects: false
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(302);
             expect(response.response.headers.location).toBe('http://localhost:8080/basic');
@@ -158,7 +161,7 @@ describe('all tests', () => {
                 path: '/redirect'
             },
             followRedirects: true
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toBe('basic');
@@ -173,7 +176,7 @@ describe('all tests', () => {
                 method: 'GET',
                 path: '/contentTypeNoBody'
             }
-        }, true)
+        })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
             expect(response.body).toBe('');
