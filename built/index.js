@@ -1,7 +1,7 @@
 "use strict";
 import * as http from 'http';
 import * as https from 'https';
-import contentType from 'content-type';
+import * as contentType from 'content-type';
 /**
     Options can take four top level fields.
     1. options.request contains all the HTTP request options (as defined in https://nodejs.org/api/http.html#http_http_request_options_callback)
@@ -11,7 +11,6 @@ import contentType from 'content-type';
     5. options.followRedirects which is a boolean that states whether or not the client should immediately follow any HTTP redirects and return the value of the final request. This currently has NO protection against infinite redirects.
  */
 export default function roadsRequest(options) {
-    _applyDefaults(options);
     _handleRequestBody(options);
     _handleBasicAuth(options);
     return new Promise((resolve, reject) => {
@@ -19,7 +18,7 @@ export default function roadsRequest(options) {
         delete options.request.protocol;
         // Build the request body
         let request = httpLib.request(options.request, (res) => {
-            res.setEncoding(options.response.encoding);
+            res.setEncoding(options.response && options.response.encoding ? options.response.encoding : 'utf8');
             let body = '';
             // Receive response body data
             res.on('data', (chunk) => {
@@ -51,32 +50,25 @@ export default function roadsRequest(options) {
         request.end();
     });
 }
-function ifEmptyThenSet(object, key, value) {
-    if (typeof object[key] === "undefined") {
-        object[key] = value;
-    }
-}
-export function _applyDefaults(options) {
-    ifEmptyThenSet(options, 'request', {});
-    ifEmptyThenSet(options, 'followRedirects', false);
-    ifEmptyThenSet(options.request, 'headers', {});
-    ifEmptyThenSet(options.request, 'protocol', 'http:');
-    ifEmptyThenSet(options, 'response', {});
-    ifEmptyThenSet(options.response, 'encoding', 'utf8');
-}
 /**
  *
  * @param {object} options
  * @param {function} fn
  */
 export function _handleRequestBody(options) {
-    if (typeof options.requestBody === "object" && typeof options.request.headers === "object") {
+    if (typeof options.requestBody === "object") {
         options.requestBody = JSON.stringify(options.requestBody);
+        if (typeof options.request.headers !== "object") {
+            options.request.headers = {};
+        }
         options.request.headers['content-type'] = 'application/json';
     }
 }
 export function _handleBasicAuth(options) {
-    if (options.basicAuth && typeof options.request.headers === "object") {
+    if (options.basicAuth) {
+        if (typeof options.request.headers !== "object") {
+            options.request.headers = {};
+        }
         options.request.headers.authorization = 'Basic ' + Buffer.from(options.basicAuth.un + ':' + options.basicAuth.pw).toString('base64');
     }
 }

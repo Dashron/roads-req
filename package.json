@@ -1,8 +1,8 @@
 {
   "name": "roads-req",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
-  "main": "index.js",
+  "main": "built/index.js",
   "scripts": {
     "test": "node node_modules/jest/bin/jest.js --config jest.config.js tests/"
   },
