@@ -3,6 +3,7 @@
   "version": "0.3.1",
   "description": "A simple network request library with some extra utility for functionality commonly used by APIs",
   "main": "built/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "node node_modules/jest/bin/jest.js --config jest.config.js tests/"
   },

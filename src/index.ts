@@ -81,7 +81,7 @@ export default function roadsRequest (options: RoadsReqOptions): Promise<RoadsRe
  * @param {object} options 
  * @param {function} fn 
  */
-export function _handleRequestBody (options: RoadsReqOptions): void {
+function _handleRequestBody (options: RoadsReqOptions): void {
     if (typeof options.requestBody === "object") {
         options.requestBody = JSON.stringify(options.requestBody);
 
@@ -93,7 +93,7 @@ export function _handleRequestBody (options: RoadsReqOptions): void {
     }
 }
 
-export function _handleBasicAuth (options: RoadsReqOptions): void {
+function _handleBasicAuth (options: RoadsReqOptions): void {
     if (options.basicAuth) {
         if (typeof options.request.headers !== "object") {
             options.request.headers = {};
@@ -103,7 +103,7 @@ export function _handleBasicAuth (options: RoadsReqOptions): void {
     }
 }
 
-export function _parseResponseBody (response: IncomingMessage, responseBody: string): string | {[x: string]: any} {
+function _parseResponseBody (response: IncomingMessage, responseBody: string): string | {[x: string]: any} {
     if (!response.headers['content-type']) {
         return responseBody;
     }

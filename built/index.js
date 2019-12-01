@@ -55,7 +55,7 @@ export default function roadsRequest(options) {
  * @param {object} options
  * @param {function} fn
  */
-export function _handleRequestBody(options) {
+function _handleRequestBody(options) {
     if (typeof options.requestBody === "object") {
         options.requestBody = JSON.stringify(options.requestBody);
         if (typeof options.request.headers !== "object") {
@@ -64,7 +64,7 @@ export function _handleRequestBody(options) {
         options.request.headers['content-type'] = 'application/json';
     }
 }
-export function _handleBasicAuth(options) {
+function _handleBasicAuth(options) {
     if (options.basicAuth) {
         if (typeof options.request.headers !== "object") {
             options.request.headers = {};
@@ -72,7 +72,7 @@ export function _handleBasicAuth(options) {
         options.request.headers.authorization = 'Basic ' + Buffer.from(options.basicAuth.un + ':' + options.basicAuth.pw).toString('base64');
     }
 }
-export function _parseResponseBody(response, responseBody) {
+function _parseResponseBody(response, responseBody) {
     if (!response.headers['content-type']) {
         return responseBody;
     }
