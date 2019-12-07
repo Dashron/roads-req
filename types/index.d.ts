@@ -15,9 +15,7 @@ export interface RoadsReqOptions {
 }
 export interface RoadsRequestResponse {
     response: IncomingMessage;
-    body: string | {
-        [x: string]: any;
-    };
+    body: string;
 }
 /**
     Options can take four top level fields.

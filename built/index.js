@@ -1,7 +1,6 @@
 "use strict";
 import * as http from 'http';
 import * as https from 'https';
-import * as contentType from 'content-type';
 /**
     Options can take four top level fields.
     1. options.request contains all the HTTP request options (as defined in https://nodejs.org/api/http.html#http_http_request_options_callback)
@@ -34,7 +33,7 @@ export default function roadsRequest(options) {
                 }
                 resolve({
                     response: res,
-                    body: _parseResponseBody(res, body)
+                    body: body
                 });
             });
         });
@@ -71,17 +70,4 @@ function _handleBasicAuth(options) {
         }
         options.request.headers.authorization = 'Basic ' + Buffer.from(options.basicAuth.un + ':' + options.basicAuth.pw).toString('base64');
     }
-}
-function _parseResponseBody(response, responseBody) {
-    if (!response.headers['content-type']) {
-        return responseBody;
-    }
-    if (responseBody === undefined || responseBody === '') {
-        return responseBody;
-    }
-    let parsedContentType = contentType.parse(response.headers['content-type']);
-    if (parsedContentType.type === 'application/json') {
-        return JSON.parse(responseBody);
-    }
-    return responseBody;
 }

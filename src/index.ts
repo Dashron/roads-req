@@ -15,8 +15,8 @@ export interface RoadsReqOptions {
 }
 
 export interface RoadsRequestResponse {
-        response: IncomingMessage,
-        body: string | {[x: string]: any}
+    response: IncomingMessage,
+    body: string
 }
 
 /**
@@ -56,7 +56,7 @@ export default function roadsRequest (options: RoadsReqOptions): Promise<RoadsRe
 
                 resolve({
                     response: res,
-                    body: _parseResponseBody(res, body)
+                    body: body
                 });
             });
         });
@@ -101,22 +101,4 @@ function _handleBasicAuth (options: RoadsReqOptions): void {
 
         options.request.headers.authorization = 'Basic ' + Buffer.from(options.basicAuth.un + ':' + options.basicAuth.pw).toString('base64');
     }
-}
-
-function _parseResponseBody (response: IncomingMessage, responseBody: string): string | {[x: string]: any} {
-    if (!response.headers['content-type']) {
-        return responseBody;
-    }
-
-    if (responseBody === undefined || responseBody === '') {
-        return responseBody;
-    }
-
-    let parsedContentType = contentType.parse(response.headers['content-type']);
-
-    if (parsedContentType.type === 'application/json') {
-        return JSON.parse(responseBody);
-    }
-
-    return responseBody;
 }

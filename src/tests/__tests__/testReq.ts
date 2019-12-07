@@ -78,10 +78,10 @@ describe('all tests', () => {
         })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
-            expect(response.body).toEqual([{
+            expect(response.body).toEqual(JSON.stringify([{
                 id: 5,
                 name: 'Harvey Birdman'
-            }]);
+            }]));
         });
     });
 
@@ -95,10 +95,10 @@ describe('all tests', () => {
         })
         .then((response) => {
             expect(response.response.statusCode).toEqual(200);
-            expect(response.body).toEqual([{
+            expect(response.body).toEqual(JSON.stringify([{
                 id: 5,
                 name: 'Harvey Birdman'
-            }]);
+            }]));
         });
     });
 
