@@ -2,7 +2,7 @@
     "compilerOptions": {
         "outDir": "./built",
         "target": "es2015",
-        "module": "esnext",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "noImplicitAny": true,
         "strictNullChecks": true,

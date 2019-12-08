@@ -4,7 +4,6 @@ import { RequestOptions as HttpRequestOptions, IncomingMessage } from "http";
 import { RequestOptions as HttpsRequestOptions} from "https";
 import * as http from 'http';
 import * as https from 'https';
-import * as contentType from 'content-type';
 
 export interface RoadsReqOptions {
     request: HttpRequestOptions | HttpsRequestOptions, 
