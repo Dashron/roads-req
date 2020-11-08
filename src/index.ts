@@ -7,7 +7,7 @@ import * as https from 'https';
 
 export interface RoadsReqOptions {
     request: HttpRequestOptions | HttpsRequestOptions, 
-    response?: { encoding: string}, 
+    response?: { encoding: BufferEncoding}, 
     requestBody?: string, 
     basicAuth?: {un: string, pw: string}, 
     followRedirects?: boolean

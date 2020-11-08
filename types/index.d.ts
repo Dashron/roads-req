@@ -4,7 +4,7 @@ import { RequestOptions as HttpsRequestOptions } from "https";
 export interface RoadsReqOptions {
     request: HttpRequestOptions | HttpsRequestOptions;
     response?: {
-        encoding: string;
+        encoding: BufferEncoding;
     };
     requestBody?: string;
     basicAuth?: {
